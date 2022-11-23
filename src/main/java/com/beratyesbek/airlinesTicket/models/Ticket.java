@@ -5,23 +5,21 @@ import lombok.Data;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Data
+@Table(name = "tickets")
 public class Ticket {
     @Id
     @Column(name = "ticket_id")
     private int ticketId;
 
-    @ManyToOne
-    @JoinColumn(name = "airport_id")
-    @Column(name = "from")
-    private Airport from;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Airport> from;
 
-    @ManyToOne
-    @JoinColumn(name = "airport_id")
-    @Column(name = "to")
-    private Airport to;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Airport> to;
 
     @Column(name = "price")
     private BigDecimal price;

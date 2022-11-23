@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@Table(name = "bought_tickets")
 public class BoughtTicket {
 
     @Id
@@ -29,6 +30,21 @@ public class BoughtTicket {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    @Column(name = "card_year")
+    private int cardYear;
+
+    @Column(name = "card_month")
+    private int cardMonth;
+
+    @Column(name = "cvv")
+    private int cvv;
+
+    @Column(name = "card_name")
+    private String cardName;
 
     @Column(name = "created_at")
     private Date createdAt;

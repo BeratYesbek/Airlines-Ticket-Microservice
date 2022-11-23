@@ -1,14 +1,16 @@
 package com.beratyesbek.airlinesTicket.models;
 
+
 import com.sun.istack.NotNull;
 import lombok.Data;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
+@Table(name = "airports")
 public class Airport {
 
     @Id
@@ -26,4 +28,10 @@ public class Airport {
     @NotNull
     @Column(name = "name")
     private String name;
+
+    @ManyToMany(mappedBy = "from")
+    private Set<Ticket> from;
+
+    @ManyToMany(mappedBy = "to")
+    private Set<Ticket> to;
 }
