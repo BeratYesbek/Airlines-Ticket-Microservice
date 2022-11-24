@@ -1,0 +1,23 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.beratyesbek.grpc;
+
+service DiscountService {
+  rpc getDiscount(DiscountRequest) returns (DiscountResponse);
+}
+
+message DiscountRequest {
+  string code = 1;
+  float price = 2;
+  string userEmail = 3;
+  string userPhone = 4;
+}
+
+message DiscountResponse {
+  string code = 1;
+  float newPRice = 2;
+  float oldPrice = 3;
+  string userEmail = 4;
+  string  userPhone = 5;
+  bool statusCode = 6;
+}

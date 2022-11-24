@@ -13,13 +13,14 @@ import java.util.Set;
 public class Ticket {
     @Id
     @Column(name = "ticket_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ticketId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Airport> from;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Airport from;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Airport> to;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Airport to;
 
     @Column(name = "price")
     private BigDecimal price;

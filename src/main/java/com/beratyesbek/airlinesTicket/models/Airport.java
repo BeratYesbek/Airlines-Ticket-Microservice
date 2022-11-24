@@ -15,23 +15,21 @@ public class Airport {
 
     @Id
     @Column(name = "airport_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int airportId;
 
-    @NotNull
     @Column(name = "country")
     private String country;
 
-    @NotNull
     @Column(name = "province")
     private String province;
 
-    @NotNull
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "from")
-    private Set<Ticket> from;
+    @OneToOne(mappedBy = "from")
+    private Ticket from;
 
-    @ManyToMany(mappedBy = "to")
-    private Set<Ticket> to;
+    @OneToOne(mappedBy = "to")
+    private Ticket to;
 }

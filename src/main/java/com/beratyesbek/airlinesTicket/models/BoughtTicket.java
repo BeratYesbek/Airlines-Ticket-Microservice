@@ -13,6 +13,7 @@ public class BoughtTicket {
 
     @Id
     @Column(name = "bought_ticket_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int boughtTicketId;
 
     @ManyToOne
