@@ -1,11 +1,14 @@
 package com.beratyesbek.airlinesTicket.controllers;
 
 import java.util.List;
+
 import com.beratyesbek.airlinesTicket.dao.BoughtTicketDao;
 import com.beratyesbek.airlinesTicket.dto.BoughtTicketCreateDto;
 import com.beratyesbek.airlinesTicket.grpcService.DiscountGrpcService;
+import com.beratyesbek.airlinesTicket.mailerService.NotifyService;
 import com.beratyesbek.airlinesTicket.models.BoughtTicket;
 import com.beratyesbek.grpc.DiscountResponse;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,25 +17,27 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping(name = "api/bought_tickets")
+@RequestMapping("api/bought_tickets")
+@AllArgsConstructor
 public class BoughtTicketsController {
     private final BoughtTicketDao boughtTicketDao;
     private final DiscountGrpcService discountGrpcService;
     private final ModelMapper modelMapper;
 
-    public BoughtTicketsController(BoughtTicketDao boughtTicketDao, DiscountGrpcService discountGrpcService, ModelMapper modelMapper) {
-        this.boughtTicketDao = boughtTicketDao;
-        this.discountGrpcService = discountGrpcService;
-        this.modelMapper = modelMapper;
-    }
+    private final NotifyService notifyService;
+
 
     @PostMapping
     public ResponseEntity create(@RequestBody BoughtTicketCreateDto boughtTicketCreateDto) {
-        BoughtTicket boughtTicket = modelMapper.map(boughtTicketCreateDto, BoughtTicket.class);
-        DiscountResponse discountResponse = discountGrpcService.getDiscount(boughtTicket, boughtTicketCreateDto.getCode());
+        BoughtTicket createdBoughtTicket = modelMapper.map(boughtTicketCreateDto, BoughtTicket.class);
+        createdBoughtTicket.setBoughtTicketId(0);
+        DiscountResponse discountResponse = discountGrpcService.getDiscount(createdBoughtTicket, boughtTicketCreateDto.getCode());
         if (discountResponse.getStatusCode()) {
-            boughtTicket.setPrice(BigDecimal.valueOf(discountResponse.getNewPRice()));
-            return ResponseEntity.ok(boughtTicketDao.save(boughtTicket));
+            createdBoughtTicket.setPrice(BigDecimal.valueOf(discountResponse.getNewPRice()));
+            BoughtTicket  boughtTicket = boughtTicketDao.save(createdBoughtTicket);
+            // TODO change parameter that given sendNotify method
+            notifyService.sendNotify(boughtTicket.getTicket().getCompanyName());
+            return ResponseEntity.ok(boughtTicket);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Your discount code is wrong");
     }

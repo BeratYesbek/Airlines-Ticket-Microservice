@@ -52,6 +52,11 @@ dependencies {
     // Model Mapper
     implementation 'org.modelmapper:modelmapper:2.4.4'
 
+    // Spring AMQP RabbitMQ
+    implementation 'org.springframework.amqp:spring-amqp:3.0.0'
+    implementation group: 'org.springframework.amqp', name: 'spring-rabbit', version: '3.0.0'
+
+
 }
 
 tasks.named('test') {
