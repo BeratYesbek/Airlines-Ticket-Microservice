@@ -3,10 +3,12 @@ package com.beratyesbek.airlinesTicket.controllers;
 import java.util.List;
 
 import com.beratyesbek.airlinesTicket.dao.BoughtTicketDao;
+import com.beratyesbek.airlinesTicket.dao.TicketDao;
 import com.beratyesbek.airlinesTicket.dto.BoughtTicketCreateDto;
 import com.beratyesbek.airlinesTicket.grpcService.DiscountGrpcService;
 import com.beratyesbek.airlinesTicket.mailerService.NotifyService;
 import com.beratyesbek.airlinesTicket.models.BoughtTicket;
+import com.beratyesbek.airlinesTicket.utilities.BoughtTicketDataHelper;
 import com.beratyesbek.grpc.DiscountResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,6 +23,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class BoughtTicketsController {
     private final BoughtTicketDao boughtTicketDao;
+
+    private final TicketDao ticketDao;
     private final DiscountGrpcService discountGrpcService;
     private final ModelMapper modelMapper;
 
@@ -34,9 +38,10 @@ public class BoughtTicketsController {
         DiscountResponse discountResponse = discountGrpcService.getDiscount(createdBoughtTicket, boughtTicketCreateDto.getCode());
         if (discountResponse.getStatusCode()) {
             createdBoughtTicket.setPrice(BigDecimal.valueOf(discountResponse.getNewPRice()));
-            BoughtTicket  boughtTicket = boughtTicketDao.save(createdBoughtTicket);
+            BoughtTicket boughtTicket = boughtTicketDao.save(createdBoughtTicket);
+            boughtTicket.setTicket(ticketDao.findById(boughtTicket.getTicket().getTicketId()).get());
             // TODO change parameter that given sendNotify method
-            notifyService.sendNotify(boughtTicket.getTicket().getCompanyName());
+            notifyService.sendNotify("Your ticket reserved successfully", BoughtTicketDataHelper.prepareHeadersDataForMailerService(boughtTicket));
             return ResponseEntity.ok(boughtTicket);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Your discount code is wrong");

@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 @AllArgsConstructor
 public class MailerQueueSender {
@@ -16,9 +18,9 @@ public class MailerQueueSender {
 
     private Queue queue;
 
-    public void send(String messages) {
+    public void send(String messages, Map<String, Object> headers) {
         MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setHeader("ultima", "sim");
+        messageProperties.setHeaders(headers);
         Message message = new Message(messages.getBytes(), messageProperties);
 
         queueSender.send(this.queue.getName(), message);
