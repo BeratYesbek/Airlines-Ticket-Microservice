@@ -13,7 +13,7 @@ public class QueueConsumer {
 
     @RabbitListener(queues = {"${queue.name}"})
     public void receive(@Payload String fileBody, @Headers Map<String, String> headers) {
-        System.out.println("Message " + fileBody);
+
     }
 
 }
