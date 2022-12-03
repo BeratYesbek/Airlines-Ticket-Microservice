@@ -7,13 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-
 @Component
-public class QueueConsumer {
+public class MailerQueueResponseConsumer {
 
-    @RabbitListener(queues = {"${queue.name}"})
+    @RabbitListener(queues = {"${queue.response.name}"})
     public void receive(@Payload String fileBody, @Headers Map<String, String> headers) {
-
+        System.out.println(fileBody);
     }
 
 }

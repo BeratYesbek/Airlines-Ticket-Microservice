@@ -37,6 +37,12 @@ public class BoughtTicket {
     @Column(name = "identity_number",nullable = false)
     private String identityNumber;
 
+    @Column(name = "seat_number")
+    private int seatNumber;
+
+    @Column(name = "seat_group",nullable = false)
+    private char seatGroup;
+
     @Column(name = "price",nullable = false)
     private BigDecimal price;
 

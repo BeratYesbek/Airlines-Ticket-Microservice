@@ -14,7 +14,7 @@ public class BoughtTicketCreateDto {
     private String userEmail;
 
     private String identityNumber;
-
+    private String fullName;
     private BigDecimal price;
 
     private String phoneNumber;

@@ -5,7 +5,8 @@ import java.util.List;
 import com.beratyesbek.airlinesTicket.dao.BoughtTicketDao;
 import com.beratyesbek.airlinesTicket.dao.TicketDao;
 import com.beratyesbek.airlinesTicket.dto.BoughtTicketCreateDto;
-import com.beratyesbek.airlinesTicket.grpcService.DiscountGrpcService;
+import com.beratyesbek.airlinesTicket.grpcService.abstracts.CheckingGrpcService;
+import com.beratyesbek.airlinesTicket.grpcService.abstracts.DiscountGrpcService;
 import com.beratyesbek.airlinesTicket.mailerService.NotifyService;
 import com.beratyesbek.airlinesTicket.models.BoughtTicket;
 import com.beratyesbek.airlinesTicket.utilities.BoughtTicketDataHelper;
@@ -22,12 +23,12 @@ import java.math.BigDecimal;
 @RequestMapping("api/bought_tickets")
 @AllArgsConstructor
 public class BoughtTicketsController {
-    private final BoughtTicketDao boughtTicketDao;
 
+    private final BoughtTicketDao boughtTicketDao;
     private final TicketDao ticketDao;
     private final DiscountGrpcService discountGrpcService;
+    private final CheckingGrpcService checkingGrpcService;
     private final ModelMapper modelMapper;
-
     private final NotifyService notifyService;
 
 
@@ -40,6 +41,7 @@ public class BoughtTicketsController {
             createdBoughtTicket.setPrice(BigDecimal.valueOf(discountResponse.getNewPRice()));
             BoughtTicket boughtTicket = boughtTicketDao.save(createdBoughtTicket);
             boughtTicket.setTicket(ticketDao.findById(boughtTicket.getTicket().getTicketId()).get());
+            checkingGrpcService.saveBoughtTicket(boughtTicket);
             // TODO change parameter that given sendNotify method
             notifyService.sendNotify("Your ticket reserved successfully", BoughtTicketDataHelper.prepareHeadersDataForMailerService(boughtTicket));
             return ResponseEntity.ok(boughtTicket);

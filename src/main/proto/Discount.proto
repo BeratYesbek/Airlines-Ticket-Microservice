@@ -21,3 +21,4 @@ message DiscountResponse {
   string  userPhone = 5;
   bool statusCode = 6;
 }
+

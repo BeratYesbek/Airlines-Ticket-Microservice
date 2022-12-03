@@ -1,4 +1,4 @@
-package com.beratyesbek.airlinesTicket.grpcService;
+package com.beratyesbek.airlinesTicket.grpcService.abstracts;
 
 import com.beratyesbek.airlinesTicket.models.BoughtTicket;
 import com.beratyesbek.grpc.Discount;

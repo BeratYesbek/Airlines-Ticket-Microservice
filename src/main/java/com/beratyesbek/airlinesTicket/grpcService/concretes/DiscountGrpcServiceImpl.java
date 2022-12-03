@@ -1,11 +1,11 @@
-package com.beratyesbek.airlinesTicket.grpcService;
+package com.beratyesbek.airlinesTicket.grpcService.concretes;
 
 
+import com.beratyesbek.airlinesTicket.grpcService.abstracts.DiscountGrpcService;
 import com.beratyesbek.airlinesTicket.models.BoughtTicket;
 import com.beratyesbek.grpc.DiscountRequest;
 import com.beratyesbek.grpc.DiscountResponse;
 import com.beratyesbek.grpc.DiscountServiceGrpc;
-import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 public class DiscountGrpcServiceImpl implements DiscountGrpcService {
 
     @GrpcClient("Discount")
-    DiscountServiceGrpc.DiscountServiceBlockingStub discountServiceStub;
-    ManagedChannel channel;
+    private DiscountServiceGrpc.DiscountServiceBlockingStub discountServiceStub;
+    private ManagedChannel channel;
 
     public DiscountGrpcServiceImpl() {
         channel = ManagedChannelBuilder.forAddress("localhost", 9090)
@@ -26,8 +26,8 @@ public class DiscountGrpcServiceImpl implements DiscountGrpcService {
 
     @Override
     public DiscountResponse getDiscount(BoughtTicket boughtTicket, String code) {
-        DiscountServiceGrpc.DiscountServiceBlockingStub stub = DiscountServiceGrpc.newBlockingStub(channel);
-        DiscountResponse discountResponse = stub.getDiscount(
+        discountServiceStub = DiscountServiceGrpc.newBlockingStub(channel);
+        DiscountResponse discountResponse = discountServiceStub.getDiscount(
                 DiscountRequest.newBuilder()
                         .setCode(code)
                         .setUserPhone(boughtTicket.getPhoneNumber())
