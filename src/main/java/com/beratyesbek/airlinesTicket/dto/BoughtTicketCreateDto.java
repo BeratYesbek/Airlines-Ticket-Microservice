@@ -10,24 +10,18 @@ import java.math.BigDecimal;
 @Setter
 public class BoughtTicketCreateDto {
     private Ticket ticket;
-
     private String userEmail;
-
     private String identityNumber;
     private String fullName;
     private BigDecimal price;
-
     private String phoneNumber;
-
     private String cardNumber;
     private String code;
-
+    private char seatGroup;
+    private int seatNumber;
     private int cardYear;
-
     private int cardMonth;
-
     private int cvv;
-
     private String cardName;
 
 }

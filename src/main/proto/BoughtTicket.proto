@@ -1,10 +1,9 @@
 syntax = "proto3";
 option java_multiple_files = true;
 package com.beratyesbek.grpc;
-import "google/protobuf/empty.proto";
 
-service CheckingService {
-  rpc saveBoughtTicket(BoughtTicketRequest) returns (google.protobuf.Empty);
+service BoughtTicketService {
+  rpc saveBoughtTicket(BoughtTicketRequest) returns (empty);
 }
 
 message BoughtTicketRequest {
@@ -14,5 +13,9 @@ message BoughtTicketRequest {
   string identityNumber = 4;
   int32 seatNumber = 5;
   int32 seatGroup = 6;
-}
+  string userEmail = 7;
 
+}
+message empty {
+
+}

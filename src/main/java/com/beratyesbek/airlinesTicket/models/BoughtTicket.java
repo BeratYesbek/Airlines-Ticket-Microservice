@@ -40,7 +40,7 @@ public class BoughtTicket {
     @Column(name = "seat_number")
     private int seatNumber;
 
-    @Column(name = "seat_group",nullable = false)
+    @Column(name = "seat_group")
     private char seatGroup;
 
     @Column(name = "price",nullable = false)
