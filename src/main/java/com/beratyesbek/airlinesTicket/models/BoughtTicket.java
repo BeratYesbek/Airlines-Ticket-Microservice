@@ -1,7 +1,7 @@
 package com.beratyesbek.airlinesTicket.models;
 
 import com.google.type.DateTime;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,7 +10,10 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "bought_tickets")
 public class BoughtTicket {
 

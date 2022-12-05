@@ -42,9 +42,10 @@ public class BoughtTicketsController {
             BoughtTicket boughtTicket = boughtTicketDao.save(createdBoughtTicket);
             boughtTicket.setTicket(ticketDao.findById(boughtTicket.getTicket().getTicketId()).get());
             checkingGrpcService.saveBoughtTicket(boughtTicket);
+            String n = boughtTicket.getTicket().getFrom().getName();
             // TODO change parameter that given sendNotify method
             notifyService.sendNotify("Your ticket reserved successfully", BoughtTicketDataHelper.prepareHeadersDataForMailerService(boughtTicket));
-            return ResponseEntity.ok(boughtTicket);
+            return new ResponseEntity(boughtTicket, HttpStatus.OK);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Your discount code is wrong");
     }

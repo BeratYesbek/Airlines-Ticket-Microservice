@@ -3,6 +3,7 @@ package com.beratyesbek.airlinesTicket.grpcService.concretes;
 import com.beratyesbek.airlinesTicket.grpcService.abstracts.CheckingGrpcService;
 import com.beratyesbek.airlinesTicket.models.BoughtTicket;
 import com.beratyesbek.grpc.BoughtTicketRequest;
+import com.beratyesbek.grpc.BoughtTicketResponse;
 import com.beratyesbek.grpc.BoughtTicketServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -25,7 +26,7 @@ public class CheckingGrpcServiceImpl implements CheckingGrpcService {
     @Override
     public void saveBoughtTicket(BoughtTicket boughtTicket) {
         grpcService = BoughtTicketServiceGrpc.newBlockingStub(channel);
-        grpcService.saveBoughtTicket(
+        BoughtTicketResponse boughtTicketResponse = grpcService.saveBoughtTicket(
                 BoughtTicketRequest.newBuilder()
                         .setCheckingCode(boughtTicket.getCheckingCode())
                         .setFullName(boughtTicket.getFullName())

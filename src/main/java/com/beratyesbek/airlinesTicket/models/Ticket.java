@@ -1,6 +1,6 @@
 package com.beratyesbek.airlinesTicket.models;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -8,7 +8,10 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tickets")
 public class Ticket {
     @Id
@@ -16,10 +19,10 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ticketId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Airport from;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Airport to;
 
     @Column(name = "price")

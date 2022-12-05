@@ -1,15 +1,20 @@
 package com.beratyesbek.airlinesTicket.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.Data;
+import lombok.*;
+
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "airports")
 public class Airport {
 
@@ -27,9 +32,11 @@ public class Airport {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "from")
+    @OneToOne(mappedBy = "from",fetch = FetchType.LAZY)
+    @JsonIgnore
     private Ticket from;
 
-    @OneToOne(mappedBy = "to")
+    @OneToOne(mappedBy = "to",fetch = FetchType.LAZY)
+    @JsonIgnore
     private Ticket to;
 }
